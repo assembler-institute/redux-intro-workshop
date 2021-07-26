@@ -312,6 +312,38 @@ ReactDOM.render(
 );
 ```
 
+## Reading from Redux
+Nowdays, the best and easier way to read from Redux's state is to use it hoos `useSelector`. It allows us to pick what we need from the state and force a render of our functional component everytime the selected value changes.
+
+Here is an example of how to use it
+```js 
+import { useSelector } from "react-redux";
+
+const MyComponent = () => {
+  const counter = useSelector(state => state.counter);
+  ...
+}
+```
+
+## Dispatching actions to Redux
+As with reading from the state, dispatching actions is also easier with react-redux hooks. In this case, we are going to use the `useDispatch` hook as follows:
+```js 
+import { useDispatch } from "react-redux";
+
+import { increaseCounterByOne } from './redux/counter/actions';
+
+const MyComponent = () => {
+  const dispatch = useDispatch();
+  
+  const handleIncreaseCounter = () => {
+    dispatch(increaseCounterByOne());
+  }
+
+  ...
+}
+```
+
+Remember that everytime we dispatch an action, Redux is going to send it to every reducer and will generate a new global state, forcing the render of every component that is listening with the `useSelector` hook.
 
 ## Learn More About Redux <!-- omit in toc -->
 
