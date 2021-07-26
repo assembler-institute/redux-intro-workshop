@@ -344,6 +344,43 @@ const MyComponent = () => {
 ```
 
 Remember that everytime we dispatch an action, Redux is going to send it to every reducer and will generate a new global state, forcing the render of every component that is listening with the `useSelector` hook.
+## Using reac-redux connect method
+After React launched the hooks in its version 16.8, developers started migrating class componets to functional componets since using hooks allows to simplify the state management. Before this, the way to read and write from/to Redux's state was using its High Order Component `connect`.
+
+Even if this method is not used anymore, is important for you to know how to use and understand it, since you may be dealing with it in legacy code.
+
+This method takes two functions as parameters: `mapStateToProps` and `mapDispatchToProps` (the names are pure conventions) and returns a function that takes the component that we are developing. 
+
+The returns of both functions are injected as props in our component so be aware that a parent componet shouldn't declare a prop with the same name.
+
+It is used as follows: 
+```js
+const MyComponent = ({ props }) => {
+  const { counter, userEmail, setCounter } = props;
+  ...
+}
+
+const mapStateToProps = (state) => ({
+  counter: state.counter,
+  userEmail: state.user.email
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setCounter: (value) => dispatch(setCounter(value))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyComponent)
+```
+
+Don't let yourself get too overwhelmed by the naming and syntax. It can be a lot to process, but they are just JavaScript concepts that you only need to know to read.
+
+
+### mapStateToProps
+Analoge to the `useSelector` hook, receives Redux's global state and returns the values that we want to inject in our component as props.
+
+### mapDispatchToProps
+Analoge to the `useDispatch` hook, returns as many functions as state modifiers we need in our component. The function can receive a value and should execute the action and pass the result to the dispatch function injected by Redux.
+
 
 ## Learn More About Redux <!-- omit in toc -->
 
