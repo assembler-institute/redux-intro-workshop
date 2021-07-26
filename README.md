@@ -409,7 +409,7 @@ const appliedMiddleware = devTools ? compose(applyMiddleware(thunk), devTools) :
 
 Once installed, our actions will no longer return the actions¡ object with the type and the payload. From now on, they should return an async function that resolves to the same action object as follows:
 ```js
-export const setCounterWithApiResult = (maxValue) => {
+export const setRandomCounter = (maxValue) => {
   return async (dispatch) => {
     const apiResult = await apiCall(maxValue);
     dispatch({ type: SET_COUNTER, payload: apiResult })

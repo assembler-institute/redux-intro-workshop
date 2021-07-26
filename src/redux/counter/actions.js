@@ -1,7 +1,10 @@
+import getRandom from '../../services/randomMock';
+
 import {
   INCREASE_COUNTER,
   DECREASE_COUNTER,
-  RESET_COUNTER
+  RESET_COUNTER,
+  SET_COUNTER
 } from './types'
 
 export const increaseCounterByOne = () => (
@@ -24,3 +27,10 @@ export const resetCounter = () => (
     payload: 1
   }
 );
+
+export const setRandomCounter = (maxValue) => {
+  return async (dispatch) => {
+    const apiResult = await getRandom(maxValue);
+    dispatch({ type: SET_COUNTER, payload: apiResult })
+  }
+}

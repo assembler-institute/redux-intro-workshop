@@ -2,7 +2,8 @@ import INITIAL_STATE from "./state";
 import {
   INCREASE_COUNTER,
   DECREASE_COUNTER,
-  RESET_COUNTER
+  RESET_COUNTER,
+  SET_COUNTER
 } from './types'
 
 const reducer =  (state = INITIAL_STATE, action) => {
@@ -15,6 +16,9 @@ const reducer =  (state = INITIAL_STATE, action) => {
     
     case RESET_COUNTER:
       return INITIAL_STATE;
+    
+    case SET_COUNTER:
+      return action.payload;
 
     default: 
       return state;
