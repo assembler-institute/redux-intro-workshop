@@ -4,7 +4,9 @@ import {
   INCREASE_COUNTER,
   DECREASE_COUNTER,
   RESET_COUNTER,
-  SET_COUNTER
+  SET_COUNTER,
+  LOADING_COUNTER,
+  ERROR_COUNTER
 } from './types'
 
 export const increaseCounterByOne = () => (
@@ -30,7 +32,12 @@ export const resetCounter = () => (
 
 export const setRandomCounter = (maxValue) => {
   return async (dispatch) => {
-    const apiResult = await getRandom(maxValue);
-    dispatch({ type: SET_COUNTER, payload: apiResult })
+    dispatch({ type: LOADING_COUNTER })
+    try {
+      const apiResult = await getRandom(maxValue);
+      dispatch({ type: SET_COUNTER, payload: apiResult })
+    } catch (error) {
+      dispatch({ type: ERROR_COUNTER })
+    }
   }
 }
