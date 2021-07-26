@@ -344,6 +344,80 @@ const MyComponent = () => {
 ```
 
 Remember that everytime we dispatch an action, Redux is going to send it to every reducer and will generate a new global state, forcing the render of every component that is listening with the `useSelector` hook.
+## Using reac-redux connect method
+After React launched the hooks in its version 16.8, developers started migrating class componets to functional componets since using hooks allows to simplify the state management. Before this, the way to read and write from/to Redux's state was using its High Order Component `connect`.
+
+Even if this method is not used anymore, is important for you to know how to use and understand it, since you may be dealing with it in legacy code.
+
+This method takes two functions as parameters: `mapStateToProps` and `mapDispatchToProps` (the names are pure conventions) and returns a function that takes the component that we are developing. 
+
+The returns of both functions are injected as props in our component so be aware that a parent componet shouldn't declare a prop with the same name.
+
+It is used as follows: 
+```js
+const MyComponent = ({ props }) => {
+  const { counter, userEmail, setCounter } = props;
+  ...
+}
+
+const mapStateToProps = (state) => ({
+  counter: state.counter,
+  userEmail: state.user.email
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setCounter: (value) => dispatch(setCounter(value))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyComponent)
+```
+
+Don't let yourself get too overwhelmed by the naming and syntax. It can be a lot to process, but they are just JavaScript concepts that you only need to know to read.
+
+
+### mapStateToProps
+Analoge to the `useSelector` hook, receives Redux's global state and returns the values that we want to inject in our component as props.
+
+### mapDispatchToProps
+Analoge to the `useDispatch` hook, returns as many functions as state modifiers we need in our component. The function can receive a value and should execute the action and pass the result to the dispatch function injected by Redux.
+
+
+## Redux Middlewares 
+Middlewares are a powerfull feature of Redux. It consists on several complementary libraries developed by the community where we can add capabilities or enable other features.
+
+We are going to include two middlewares on our Redux store: the ReduxDevTools and Redux Thunk.
+
+### ReduxDevTools
+ReduxDevTools is a browser extension that allow us to inspect, in the broswer dev console, Redux's global storage along with the history of every action dispatched, its parameters, modifiers and the state that result from that action.
+
+To use it, we just need to get it from the global window object (since its a browser exttension it lives there) and add it to the store.
+
+In our example, it is already included here:
+```js
+const devTools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
+const appliedMiddleware = devTools ? compose(devTools) : compose();
+```
+We just need to check if the extension is available to avoid errors on browsers where it is not installed.
+
+### Redux Thunk
+Redux Thunk is a Redux middleware that allow us to perform async calls in our Redux actions. This way, we can make api calls and insert their result to the reducers.
+
+To install it, we just need to include it along with the dev tools as follows: 
+```js
+const appliedMiddleware = devTools ? compose(applyMiddleware(thunk), devTools) : compose(applyMiddleware(thunk));
+```
+
+Once installed, our actions will no longer return the actions¡ object with the type and the payload. From now on, they should return an async function that resolves to the same action object as follows:
+```js
+export const setCounterWithApiResult = (maxValue) => {
+  return async (dispatch) => {
+    const apiResult = await apiCall(maxValue);
+    dispatch({ type: SET_COUNTER, payload: apiResult })
+  }
+}
+```
+
+The reducers remains the same. They will receive the object that we send through the dispatch call.
 
 ## Learn More About Redux <!-- omit in toc -->
 
