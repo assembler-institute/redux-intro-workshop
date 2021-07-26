@@ -312,6 +312,19 @@ ReactDOM.render(
 );
 ```
 
+## Reading from Redux
+Nowdays, the best and easier way to read from Redux's state is to use it hoos `useSelector`. It allows us to pick what we need from the state and force a render of our functional component everytime the selected value changes.
+
+Here is an example of how to use it
+```js 
+import { useSelector } from "react-redux";
+
+const MyComponent = () => {
+  const counter = useSelector(state => state.counter);
+  ...
+}
+```
+
 
 ## Learn More About Redux <!-- omit in toc -->
 
