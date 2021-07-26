@@ -1,13 +1,20 @@
-const reducer =  (state = 0, action) => {
+import INITIAL_STATE from "./state";
+import {
+  INCREASE_COUNTER,
+  DECREASE_COUNTER,
+  RESET_COUNTER
+} from './types'
+
+const reducer =  (state = INITIAL_STATE, action) => {
   switch(action.type) {
-    case 'INCREASE_COUNTER': 
+    case INCREASE_COUNTER: 
       return state + action.payload;
 
-    case 'DECREASE_COUNTER':
+    case DECREASE_COUNTER:
       return state - action.payload;
     
-    case 'RESET_COUNTER':
-      return 0;
+    case RESET_COUNTER:
+      return INITIAL_STATE;
 
     default: 
       return state;
