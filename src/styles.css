@@ -1,0 +1,39 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0
+}
+
+p {
+  margin: 0
+}
+
+header {
+  height: 60px;
+  padding: 10px 20px;
+  box-shadow: 0 0 5px #8a8a8a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0;
+}
+
+main {
+  height: calc(100vh - 100px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+footer {
+  height: 40px;
+  padding: 10px;
+  background-color: #1a1a1a;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+}
