@@ -417,6 +417,61 @@ export const setRandomCounter = (maxValue) => {
 }
 ```
 
+### Multiple dispatchs on one actions
+When performing async calls on Redux actions, we may often need some time to get the response. While waiting, we can ensure a good user experience by leting the user know the state of the action he/she has performed. 
+
+To achieve that goal we can dispatch multiple actions on the same function to inform the user whether we are loading, we have loaded the result or there was an error.
+
+Now, our example state will need to be changed to an object that stores the value and the status of the action like this one:
+```js 
+const INITIAL_STATE = { status: 'ok', value: 0 };
+
+export default INITIAL_STATE;
+```
+
+On the `setRandomCounter` action we now need to dispatch every action that will inform about the status of the process:
+```js
+export const setRandomCounter = (maxValue) => {
+  return async (dispatch) => {
+    dispatch({ type: LOADING_COUNTER })
+    try {
+      const apiResult = await getRandom(maxValue);
+      dispatch({ type: SET_COUNTER, payload: apiResult })
+    } catch (error) {
+      dispatch({ type: ERROR_COUNTER })
+    }
+  }
+}
+```
+
+Note that we should add those types to the counter types and change the reducer to manage the new actions and state structure as follows:
+```js
+const reducer =  (state = INITIAL_STATE, action) => {
+  switch(action.type) {
+    case INCREASE_COUNTER: 
+      return { ...state, status: 'ok', value: state.value + action.payload };
+
+    case DECREASE_COUNTER:
+      return { ...state, status: 'ok', value: state.value - action.payload };
+    
+    case RESET_COUNTER:
+      return INITIAL_STATE;
+    
+    case SET_COUNTER:
+      return { ...state, status: 'ok', value: action.payload };
+    
+    case LOADING_COUNTER:
+      return { ...state, status: 'loading' };
+
+    case ERROR_COUNTER:
+      return { ...state, status: 'error' };
+
+    default: 
+      return state;
+  }
+}
+```
+
 The reducers remains the same. They will receive the object that we send through the dispatch call.
 
 ## Learn More About Redux <!-- omit in toc -->
