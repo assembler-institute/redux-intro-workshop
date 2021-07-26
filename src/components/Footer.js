@@ -1,7 +1,6 @@
-import { useSelector } from "react-redux";
+import { connect } from "react-redux";
 
-const Footer = () => {
-  const counter = useSelector(state => state.counter);
+const Footer = ({ counter }) => {
   return (
     <footer>
       <p>Counter: {counter}</p>
@@ -9,4 +8,9 @@ const Footer = () => {
   )
 };
 
-export default Footer;
+const mapStateToProps = (state) => ({
+  counter: state.counter
+})
+
+export default connect(mapStateToProps)(Footer);
+
