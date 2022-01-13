@@ -3,48 +3,40 @@ import {
   DECREASE_COUNTER,
   RESET_COUNTER,
   SET_COUNTER,
-  RANDOM_COUNTER,
-  LOADING_COUNTER,
+  COUNTER_LOADING,
 } from './types';
 import initialState from './state';
 
 const reducer = (state = initialState, action) => {
-console.log('IMTCHLG ~ file: reducer.js ~ line 11 ~ reducer ~ action', action);
   switch(action.type) {
     case INCREASE_COUNTER: {
-      const newCounterValue = state.value + 1;
-      localStorage.setItem('ASSEMBLER_COUNTER', newCounterValue);
-      return {
-        ...state,
-        value: newCounterValue,
-      }
+      if (state.status === 'loading') return state;
+      return { ...state, number: state.number + 1 };
     }
     case DECREASE_COUNTER: {
+      if (state.status === 'loading') return state;
       return {
         ...state,
-        value: state.value - 1,
-      }
+        number: state.number === 0 ? 0 : state.number - 1
+      };
     }
     case RESET_COUNTER: {
+      if (state.status === 'loading') return state;
       return initialState;
     }
     case SET_COUNTER: {
+      const counterParsed = Number(action.payload);
+
       return {
         ...state,
-        value: action.payload,
         status: 'ok',
-      }
+        number: Number.isNaN(counterParsed) ? state : counterParsed
+      };
     }
-    case RANDOM_COUNTER: {
+    case COUNTER_LOADING: {
       return {
         ...state,
-        value: Math.round(Math.random() * 10),
-      }
-    }
-    case LOADING_COUNTER: {
-      return {
-        ...state,
-        status: 'loading',
+        status: 'loading'
       }
     }
     default: {

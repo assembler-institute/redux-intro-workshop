@@ -1,13 +1,10 @@
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux';
 
 const Footer = () => {
-  const counter = useSelector(state => state.counter);
-
+  const { status, number } = useSelector((state) => state.counter);
   return (
-    <footer style={{backgroundColor: '#CDCDCD'}}>
-      {counter.value}
-    </footer>
+    <footer>Counter: {status === 'loading' ? 'Loading...' : number}</footer>
   )
-}
+};
 
 export default Footer;

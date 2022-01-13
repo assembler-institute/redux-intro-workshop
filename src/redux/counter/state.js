@@ -1,5 +1,3 @@
-const initialState = {
-  status: 'ok',
-  value: localStorage.getItem('ASSEMBLER_COUNTER') || 0
-};
+const initialState = { status: 'ok', number: 0 };
+
 export default initialState;
